@@ -11,5 +11,5 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ~/puppeteer:/app
+      - .:/app
     working_dir: /app
