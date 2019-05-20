@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const delay = require('delay');
 
 //全てのチェックボックスをチェックする。
 const checkAllVegetableScript = `
@@ -24,5 +25,8 @@ const checkAllVegetableScript = `
     await page.goto('http://3min.ntv.co.jp/3min/search_option');
 
     await page.addScriptTag({ content: checkAllVegetableScript });
+
+    await delay(3000);
+    await browser.close();
 
 })();

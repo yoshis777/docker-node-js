@@ -1,8 +1,6 @@
 ## 概要
-[Docker + docker-compose + puppeteer でスクレイピングしてみた](https://qiita.com/takayuki-miura0203/items/4fa4cdc9ef0c07a857a9)を参考に
-スクレイピング用にpuppeteerをnode.jsで起動させるためのコンテナ環境を準備する。  
-上記環境のコンテナをビルドするDockerfileを用意し、
-docker-composeにてコンテナを起動できるようにする。
+[Docker + docker-compose + puppeteer でスクレイピングしてみた](https://qiita.com/takayuki-miura0203/items/4fa4cdc9ef0c07a857a9)を参考にスクレイピング用にpuppeteerをnode.jsで起動させるためのコンテナ環境を準備する。  
+上記環境のコンテナをビルドするDockerfileを用意し、docker-composeにてコンテナを起動できるようにする。
 
 Dockerfileについては、[Running Puppeteer in Docker](https://github.com/GoogleChrome/puppeteer/blob/v1.12.1/docs/troubleshooting.md#running-puppeteer-in-docker)に記載のものをそのままを流用している。
 
@@ -33,4 +31,13 @@ $ yarn install
 ```
 ```bash
 $ node practice/page_transition.js
+```
+
+### use_my_password.js
+1. .envファイルをルートに作成
+2. 以下のように記載
+3. .gitignoreに追記
+```bash
+MY_USER_ID = *****
+MY_PASSWORD = *****
 ```
