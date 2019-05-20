@@ -15,4 +15,22 @@ $ docker-compose run --rm --entrypoint /bin/sh puppeteer
 $ node example.js
 
 ```
-[example.com](https://example.com/)の画面スクリーンショットであるexample.pngが作成されれば成功
+[example.com](https://example.com/)の画面スクリーンショットであるexample.pngが作成されれば成功  
+
+※puppetterはグローバルに導入されているので、example.jsの起動だけであれば、npm installは不要
+
+## ローカルで扱う場合
+ローカルにnode.jsを導入した状態で
+```bash
+$ npm install
+```
+
+## practiceフォルダ内のjsファイルについて
+jsライブラリをrequireするので、コンテナ内で以下コマンドが必要
+```bash
+$ npm install
+$ yarn install
+```
+```bash
+$ node practice/page_transition.js
+```

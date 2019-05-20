@@ -1,0 +1,12 @@
+{
+  "name": "puppeteer",
+  "private": true,
+  "description": "practice of puppeteer",
+  "scripts": {
+    "main": "node example.js"
+  },
+  "dependencies": {
+    "delay": "^4.2.0",
+    "puppeteer": "^1.16.0"
+  }
+}
