@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
-// const stringify = require('csv-sgringify');
-// const iconv = require('iconv-lite');
-// const fs = require('fs');
-// const path = require('path');
+const stringify = require('csv-stringify');
+const iconv = require('iconv-lite');
+const fs = require('fs');
+const path = require('path');
 
 (async() => {
     const browser = await puppeteer.launch({
@@ -34,7 +34,19 @@ const puppeteer = require('puppeteer');
     //結果の取得
     console.log(`銘柄コード ${stockCode} (${stockName}) の株価は ${stockPrice} です。`);
 
-    //TODO: csvにする処理
+    //csv出力
+    const weathers = [];
+    const stocks = [];
+    stocks.push(['銘柄コード', '銘柄名', '株価']);
+    stocks.push([stockCode, stockName, stockPrice]);
+
+    stringify(stocks, (error, stocksString) => {
+       const writableStream = fs.createWriteStream(
+           path.join(__dirname, 'stock.csv')
+       );
+       writableStream.write(iconv.encode(stocksString, 'Shift_JIS'));
+
+    });
 
     browser.close();
 
