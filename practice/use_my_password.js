@@ -11,7 +11,7 @@ const PASSWORD = process.env.MY_PASSWORD;
 (async () => {
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         slowMo: 50
     });
 
