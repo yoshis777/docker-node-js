@@ -33,46 +33,62 @@ const executeQuery = (client, query, closeMode) => {
 };
 
 (async() => {
+
+    let stockCode = 6670;
+    let stockName;
+    let stockPrice;
     const browser = await puppeteer.launch({
         headless: true,
         slowMo: 50
     });
 
-    const page = await browser.newPage();
+    try{
 
-    await page.setViewport({
-        width: 1200,
-        height: 800
-    });
+        const page = await browser.newPage();
 
-    const stockCode = 6670;
+        await page.setViewport({
+            width: 1200,
+            height: 800
+        });
 
-    await page.goto(`https://www.nikkei.com/nkd/company/?scode=${stockCode}`);
+        await page.goto(`https://www.nikkei.com/nkd/company/?scode=${stockCode}`);
 
-    //銘柄
-    const stockName = await page.evaluate(() =>
-        document.querySelector('h1.m-headlineLarge_text').textContent
-    );
+        //銘柄
+        stockName = await page.evaluate(() =>
+            document.querySelector('h1.m-headlineLarge_text').textContent
+        );
 
-    //株価
-    let stockPrice = await page.evaluate(() =>
-        document.querySelector('.m-stockPriceElm_value.now').textContent
-    );
+        //株価
+        stockPrice = await page.evaluate(() =>
+            document.querySelector('.m-stockPriceElm_value.now').textContent
+        );
 
-    //結果の取得
-    stockPrice = stockPrice.replace(/[^0-9]/g, '');
-    console.log(`銘柄コード ${stockCode} (${stockName}) の株価は ${stockPrice} です。`);
+        //結果の取得
+        stockPrice = stockPrice.replace(/[^0-9]/g, '');
+        console.log(`銘柄コード ${stockCode} (${stockName}) の株価は ${stockPrice} です。`);
+
+        browser.close();
+
+    } catch (e) {
+        //エラーが起きたら、DB格納しない
+        console.error(e);
+        browser.close();
+        return;
+    }
 
     //DB接続
-    let client = createClientToDb();
+    try {
+        let client = createClientToDb();
 
-    const query = {
-        text: 'INSERT INTO "public"."tests" ("code", "name", "price") VALUES ($1, $2, $3)',
-        values: [stockCode, stockName, stockPrice]
-    };
+        const query = {
+            text: 'INSERT INTO "public"."tests" ("code", "name", "price") VALUES ($1, $2, $3)',
+            values: [stockCode, stockName, stockPrice]
+        };
 
-    executeQuery(client, query, true);
-    browser.close();
+        executeQuery(client, query, true);
+    } catch (e) {
+        console.error(e);
+    }
 
 })();
 
