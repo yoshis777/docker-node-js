@@ -41,3 +41,16 @@ $ node practice/page_transition.js
 MY_USER_ID = *****
 MY_PASSWORD = *****
 ```
+
+### get_stock_price_to_db.js
+1. .envファイルをルートに作成（既にある場合は、追記）
+2. 以下のように記載
+3. .gitignoreに追記
+```bash
+DB_USER = *****
+DB_HOST = *****
+DB_NAME = *****
+DB_PASS = *****
+DB_PORT = 5432
+
+```
