@@ -6,6 +6,7 @@ const path = require('path');
 let { Client } = require('pg');
 require('dotenv').config();
 
+//DB接続用クライアント
 const createClientToDb = () => {
     let client = new Client({
         user: process.env.DB_USER,
@@ -17,6 +18,18 @@ const createClientToDb = () => {
     client.connect();
 
     return client;
+};
+
+const executeQuery = (client, query, closeMode) => {
+    client.query(query)
+        .then(res => {
+            console.log(res);
+            if (closeMode) client.end(console.log('Closed client connection'));
+        })
+        .catch(err => {
+            console.error(err.stack);
+            if (closeMode) client.end(console.log('Closed client connection'));
+        });
 };
 
 (async() => {
@@ -58,16 +71,7 @@ const createClientToDb = () => {
         values: [stockCode, stockName, stockPrice]
     };
 
-    client.query(query)
-        .then(res => {
-            console.log(res);
-            client.end(console.log('Closed client connection'));
-        })
-        .catch(err => {
-            console.error(err.stack);
-            client.end(console.log('Closed client connection'));
-        });
-
+    executeQuery(client, query, true);
     browser.close();
 
 })();
